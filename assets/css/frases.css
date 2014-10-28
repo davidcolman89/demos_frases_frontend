@@ -41,3 +41,7 @@
 .logo {
     width: 32px !important;
 }
+
+.table-listado-frases th, .table-listado-frases td{
+    width: 50% !important;
+}

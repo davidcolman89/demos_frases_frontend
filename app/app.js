@@ -3,10 +3,13 @@
  */
 var App = {
     initialize: function() {
+
+        console.log(":INICIALIZANDO LA APP:");
+
         this.initializeTemplates();
         this.compileTemplates();
-        this.fillHeaderContent();
-        this.fillFooterContent();
+        this.fillTemplatesContent();
+        this.onDeviceReady();
     },
     initializeTemplates: function () {
         App.templates = {
@@ -14,6 +17,29 @@ var App = {
             headerContent: "",
             footerContent: ""
         };
+    },
+    onDeviceReady: function () {
+        this.fillTableRowsWithFrases();
+
+        Helper.jqueryEventClick('btn-save-new-frase',function() {
+            var idForm = 'frm-new-frase';
+            var dataFormSerialized = Helper.jqueryGetDataFormSerialized(idForm);
+            App.saveNewFrase(dataFormSerialized, function (response) {
+                Helper.jqueryResetForm(idForm);
+            }, function (response) {
+
+                var messages = response.responseJSON.error.message;
+                var textErrors = Helper.jqueryGetErrorsByMessagesObject(messages);
+
+                var html = textErrors.join('<br/>');
+
+                Helper.jqueryFillHTMLContent('div-ajax-response',html);
+            });
+        });
+    },
+    fillTemplatesContent: function () {
+        this.fillHeaderContent();
+        this.fillFooterContent();
     },
     fillHeaderContent: function () {
         var headerHtml = App.templates.headerContent();
@@ -49,5 +75,8 @@ var App = {
             html += App.templates.tableRowsOfFrases(frase);
         });
         return html;
+    },
+    saveNewFrase: function (data, callback, callbackFail) {
+        Frase.setDataStore(data).store(callback, callbackFail);
     }
 };

@@ -14,7 +14,7 @@
         <form>
             <input type="text" data-type="search" id="filterable-table-frases">
         </form>
-        <table class="ui-responsive table-stripe"
+        <table class="ui-table ui-responsive table-stripe table-listado-frases"
                data-filter="true" data-input="#filterable-table-frases">
             <thead>
             <tr class="ui-bar-d">
@@ -30,7 +30,7 @@
 <div data-role="page" id="nueva-frase">
     <div data-role="header" class="header-content"></div>
     <div role="main" class="ui-content">
-        <form id="frmAltaCliente" onsubmit="return false;">
+        <form id="frm-new-frase" onsubmit="return false;">
             <div data-role="fieldcontain">
                 <label for="frase-alta-autor">Autor:</label>
                 <input type="text" name="autor" id="frase-alta-autor" value=""/>
@@ -39,11 +39,13 @@
                 <label for="frase-alta-texto">Frase:</label>
                 <textarea name="texto" id="frase-alta-texto"></textarea>
             </div>
-            <input type="button" id="" class="ui-btn" value="Guardar">
+            <input type="button" id="btn-save-new-frase" class="ui-btn" value="Guardar">
+            <div id="div-ajax-response"></div>
         </form>
     </div>
     <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
+
 <script id="table-rows-frases" type="text/x-handlebars-template">
     <tr>
         <td>{{ autor }}</td>
@@ -65,16 +67,18 @@
         </ul>
     </div>
 </script>
+
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 <script src="assets/lib/jquery/jquery-1.11.1.min.js"></script>
 <script src="assets/lib/jquery/jquery.mobile-1.4.4.min.js"></script>
 <script src="assets/lib/handlebars/handlebars-v1.3.0.js"></script>
+<script src="assets/lib/min/empty.min.js"></script>
 <script src="app/config.js"></script>
+<script src="app/helper.js"></script>
 <script src="app/frase.js"></script>
 <script src="app/app.js"></script>
 <script type="application/javascript">
     App.initialize();
-    App.fillTableRowsWithFrases();
 </script>
 </body>
 </html>
