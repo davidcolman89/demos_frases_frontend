@@ -2,10 +2,8 @@
  * Created by david on 27/10/14.
  */
 var App = {
-    initialize: function() {
-
+    initialize: function () {
         console.log(":INICIALIZANDO LA APP:");
-
         this.initializeTemplates();
         this.compileTemplates();
         this.fillTemplatesContent();
@@ -19,22 +17,13 @@ var App = {
         };
     },
     onDeviceReady: function () {
-        this.fillTableRowsWithFrases();
-
-        Helper.jqueryEventClick('btn-save-new-frase',function() {
-            var idForm = 'frm-new-frase';
-            var dataFormSerialized = Helper.jqueryGetDataFormSerialized(idForm);
-            App.saveNewFrase(dataFormSerialized, function (response) {
-                Helper.jqueryResetForm(idForm);
-            }, function (response) {
-
-                var messages = response.responseJSON.error.message;
-                var textErrors = Helper.jqueryGetErrorsByMessagesObject(messages);
-
-                var html = textErrors.join('<br/>');
-
-                Helper.jqueryFillHTMLContent('div-ajax-response',html);
-            });
+        Helper.jqueryEventClick('#btn-save-new-frase', function () {
+            Helper.jqueryShowAjaxLoading();
+            FraseController.store('frm-new-frase', 'div-ajax-response');
+        });
+        Helper.jqueryMobileOnPageShow('#listado-frases', function (e) {
+            e.preventDefault();
+            App.fillTableRowsWithFrases();
         });
     },
     fillTemplatesContent: function () {
@@ -42,12 +31,10 @@ var App = {
         this.fillFooterContent();
     },
     fillHeaderContent: function () {
-        var headerHtml = App.templates.headerContent();
-        $(".header-content").html(headerHtml);
+        Helper.jqueryFillHTMLContent('.header-content', App.templates.headerContent());
     },
     fillFooterContent: function () {
-        var footerHtml = App.templates.footerContent();
-        $(".footer-content").html(footerHtml);
+        Helper.jqueryFillHTMLContent('.footer-content', App.templates.footerContent());
     },
     compileTemplates: function () {
         var source;
@@ -61,12 +48,11 @@ var App = {
         source = document.getElementById('footer-content').innerHTML;
         App.templates.footerContent = Handlebars.compile(source);
     },
-    fillTableRowsWithFrases: function() {
-        Frase.getFrasesFromAPI(function(response){
-            var frases = response.data;
-            var tbodyOfTableFrases = $('#table-frases-tbody');
-            var html = App.createHTMLWithFrases(frases);
-            tbodyOfTableFrases.html(html);
+    fillTableRowsWithFrases: function () {
+        Helper.jqueryShowAjaxLoading();
+        Frase.getFrasesFromAPI(function (response) {
+            Helper.jqueryFillHTMLContent('#table-frases-tbody',App.createHTMLWithFrases(response.data));
+            Helper.jqueryHideAjaxLoading();
         });
     },
     createHTMLWithFrases: function (frases) {
@@ -75,8 +61,5 @@ var App = {
             html += App.templates.tableRowsOfFrases(frase);
         });
         return html;
-    },
-    saveNewFrase: function (data, callback, callbackFail) {
-        Frase.setDataStore(data).store(callback, callbackFail);
     }
 };
