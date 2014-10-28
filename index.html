@@ -14,10 +14,10 @@
         <form>
             <input type="text" data-type="search" id="filterable-table-frases">
         </form>
-        <table class="ui-table"
+        <table class="ui-responsive table-stripe"
                data-filter="true" data-input="#filterable-table-frases">
             <thead>
-            <tr>
+            <tr class="ui-bar-d">
                 <th>Autor</th>
                 <th>Frase</th>
             </tr>
@@ -25,7 +25,7 @@
             <tbody id="table-frases-tbody"></tbody>
         </table>
     </div>
-    <div data-role="footer" class="footer-content"></div>
+    <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
 <div data-role="page" id="nueva-frase">
     <div data-role="header" class="header-content"></div>
@@ -42,7 +42,7 @@
             <input type="button" id="" class="ui-btn" value="Guardar">
         </form>
     </div>
-    <div data-role="footer" class="footer-content"></div>
+    <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
 <script id="table-rows-frases" type="text/x-handlebars-template">
     <tr>
