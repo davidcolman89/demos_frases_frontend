@@ -1,4 +1,5 @@
 var Frase = {
+    limitOfPaginate: 15,
     dataStore: '',
     frases: [],
     idForm: '',
@@ -26,6 +27,13 @@ var Frase = {
     },
     getFrasesFromAPI: function (callback) {
         return Helper.jqueryGetJSON(urlApiFrases, callback);
+    },
+    getFrasesFromAPIWithPaginate: function (page, callback, limit ) {
+        var url = urlApiFrasesPaginadas + '?' + $.param({
+            page:page,
+            limit: limit || this.limitOfPaginate
+        });
+        return Helper.jqueryGetJSON(url, callback);
     },
     save: function (callback, callbackFail) {
         return Helper.jqueryPostJSON(urlApiFrases, this.getDataStore(), callback, callbackFail);

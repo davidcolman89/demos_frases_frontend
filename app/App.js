@@ -3,28 +3,56 @@
  */
 var App = {
     initialize: function () {
-        console.log(":INICIALIZANDO LA APP:");
         this.initializeTemplates();
         this.compileTemplates();
         this.fillTemplatesContent();
-        this.onDeviceReady();
+        this.bindEvents();
     },
     initializeTemplates: function () {
         App.templates = {
-            tableRowsOfFrases: "",
+            rowsOfFrases: "",
             headerContent: "",
             footerContent: ""
         };
     },
+    bindEvents: function() {
+        if ( Helper.isAccessedByMobile() ) return document.addEventListener('deviceready', this.onDeviceReady, false);
+        return this.onDeviceReady();
+    },
     onDeviceReady: function () {
-        Helper.jqueryEventClick('#btn-save-new-frase', function () {
+
+        App.pageOfFrases = 1;
+
+        App.mobHeight = $.mobile.getScreenHeight();
+
+        Helper.jqueryMobileOnPageInit(App.onPageInit);
+
+        Helper.jqueryOnClick('#btn-save-new-frase', function (e) {
+            e.preventDefault();
             Helper.jqueryShowAjaxLoading();
             FraseController.store('frm-new-frase', 'div-ajax-response');
         });
-        Helper.jqueryMobileOnPageShow('#listado-frases', function (e) {
+
+        Helper.jqueryMobileOnPageShow('#page-listado-frases', function (e) {
             e.preventDefault();
-            App.fillTableRowsWithFrases();
+
         });
+
+        $(document).scroll(function () {});
+
+        $(document).bind("scrollstop",function(){
+            var scrollTop = $(window).scrollTop();
+            var winHeight = $(window).height();
+            var docHeight = $(document).height();
+            var diff = docHeight - winHeight;
+            var page = $('.next-page:last').val() || 1;
+            if(scrollTop == diff) {
+                App.fillListadoFrases(page);
+            }
+        });
+    },
+    onPageInit: function () {
+        $.mobile.defaultPageTransition = 'none';
     },
     fillTemplatesContent: function () {
         this.fillHeaderContent();
@@ -39,27 +67,37 @@ var App = {
     compileTemplates: function () {
         var source;
 
-        source = document.getElementById('table-rows-frases').innerHTML;
-        App.templates.tableRowsOfFrases = Handlebars.compile(source);
+        source = Helper.jqueryGetHTMLFromField('#div-rows-frases');
+        App.templates.rowsOfFrases = Handlebars.compile(source);
 
-        source = document.getElementById('header-content').innerHTML;
+        source = Helper.jqueryGetHTMLFromField('#header-content');
         App.templates.headerContent = Handlebars.compile(source);
 
-        source = document.getElementById('footer-content').innerHTML;
+        source = Helper.jqueryGetHTMLFromField('#footer-content');
         App.templates.footerContent = Handlebars.compile(source);
     },
-    fillTableRowsWithFrases: function () {
+    fillListadoFrases: function (page) {
+
         Helper.jqueryShowAjaxLoading();
-        Frase.getFrasesFromAPI(function (response) {
-            Helper.jqueryFillHTMLContent('#table-frases-tbody',App.createHTMLWithFrases(response.data));
+        Frase.getFrasesFromAPIWithPaginate(page, function (response) {
+            var frases = response.data;
+
+            if(!empty(frases))
+            {
+                var jquerySelector = '#div-listado-frases';
+
+                //if(frases.length == Frase.limitOfPaginate) var nextPage = parseInt(page) + 1;
+                var nextPage = parseInt(page) + 1;
+
+                var html = App.templates.rowsOfFrases({
+                    frases: frases,
+                    page: nextPage
+                });
+
+                Helper.jqueryAppendHTMLContent(jquerySelector, html);
+            }
+
             Helper.jqueryHideAjaxLoading();
         });
-    },
-    createHTMLWithFrases: function (frases) {
-        var html = "";
-        $.each(frases, function (index, frase) {
-            html += App.templates.tableRowsOfFrases(frase);
-        });
-        return html;
     }
 };

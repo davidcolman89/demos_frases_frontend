@@ -2,7 +2,10 @@
  * Created by david on 28/10/14.
  */
 var Helper = {
-    jqueryEventClick: function (jquerySelector, callback) {
+    isAccessedByMobile: function () {
+        return document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+    },
+    jqueryOnClick: function (jquerySelector, callback) {
         return $(jquerySelector).click(callback);
     },
     jqueryGetJSON: function (url, callback) {
@@ -31,6 +34,9 @@ var Helper = {
     jqueryFillHTMLContent: function (jquerySelector, html) {
         return $(jquerySelector).html(html);
     },
+    jqueryAppendHTMLContent: function (jquerySelector, html) {
+        return $(jquerySelector).append(html);
+    },
     jqueryClearValueContent: function (jquerySelector) {
         return $(jquerySelector).val('');
     },
@@ -41,9 +47,18 @@ var Helper = {
         return $(document).on("pageshow", page, callback);
     },
     jqueryShowAjaxLoading: function () {
-        $.mobile.loading('show');
+        return $.mobile.loading('show');
     },
     jqueryHideAjaxLoading: function () {
-        $.mobile.loading('hide');
+        return $.mobile.loading('hide');
+    },
+    jqueryMobileOnPageInit: function (callback) {
+        return $(document).bind('pageinit',callback);
+    },
+    jqueryMobileChangePage: function (pageSelector, options) {
+        return $(":mobile-pagecontainer").pagecontainer("change", pageSelector, options);
+    },
+    jqueryGetHTMLFromField: function (jquerySelector) {
+        return $(jquerySelector).html();
     }
 };
