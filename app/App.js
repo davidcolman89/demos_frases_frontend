@@ -38,14 +38,12 @@ var App = {
 
         });
 
-        $(document).scroll(function () {});
-
         $(document).bind("scrollstop",function(){
             var scrollTop = $(window).scrollTop();
             var winHeight = $(window).height();
             var docHeight = $(document).height();
             var diff = docHeight - winHeight;
-            var page = $('.next-page:last').val() || 1;
+            var page = Helper.jqueryGetValueFromField('.next-page:last') || 1;
             if(scrollTop == diff) {
                 App.fillListadoFrases(page);
             }
@@ -76,25 +74,22 @@ var App = {
         source = Helper.jqueryGetHTMLFromField('#footer-content');
         App.templates.footerContent = Handlebars.compile(source);
     },
-    fillListadoFrases: function (page) {
+    fillListadoFrases: function (lastPage) {
 
         Helper.jqueryShowAjaxLoading();
-        Frase.getFrasesFromAPIWithPaginate(page, function (response) {
+        Frase.getFrasesFromAPIWithPaginate(lastPage, function (response) {
             var frases = response.data;
 
-            if(!empty(frases))
+            if(Helper.isFull(frases))
             {
-                var jquerySelector = '#div-listado-frases';
-
-                //if(frases.length == Frase.limitOfPaginate) var nextPage = parseInt(page) + 1;
-                var nextPage = parseInt(page) + 1;
-
-                var html = App.templates.rowsOfFrases({
+                var jquerySelector = '#ul-frases-listview';
+                var nextPage = parseInt(lastPage) + 1;
+                var dataForTemplate = {
                     frases: frases,
                     page: nextPage
-                });
-
-                Helper.jqueryAppendHTMLContent(jquerySelector, html);
+                };
+                var html = App.templates.rowsOfFrases(dataForTemplate);
+                Helper.jqueryAppendHTMLContent(jquerySelector, html).listview('refresh');
             }
 
             Helper.jqueryHideAjaxLoading();

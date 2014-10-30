@@ -45,3 +45,13 @@
 .table-listado-frases th, .table-listado-frases td{
     width: 50% !important;
 }
+
+.app-frase-autor {
+
+    background-color: #34495e;
+    color: #ffffff;
+    height: 2em;
+}
+
+.app-frase-texto {
+}

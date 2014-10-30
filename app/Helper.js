@@ -2,6 +2,12 @@
  * Created by david on 28/10/14.
  */
 var Helper = {
+    isEmpty:function (value) {
+        return empty(value);
+    },
+    isFull:function (value) {
+        return !this.isEmpty(value);
+    },
     isAccessedByMobile: function () {
         return document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
     },
@@ -60,5 +66,8 @@ var Helper = {
     },
     jqueryGetHTMLFromField: function (jquerySelector) {
         return $(jquerySelector).html();
+    },
+    jqueryGetValueFromField: function (jquerySelector) {
+        return $(jquerySelector).val();
     }
 };

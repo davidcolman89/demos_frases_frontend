@@ -6,20 +6,15 @@
     <link id="page_favicon" href="favicon.ico" rel="icon" type="image/x-icon" />
     <title>Biblioco 34</title>
     <link rel="stylesheet" href="assets/lib/jquery/jquery.mobile-1.4.4.min.css" />
-    <link rel="stylesheet" href="assets/css/frases.css" />
+    <link rel="stylesheet" href="assets/css/app.css" />
 </head>
 <body>
 <div data-role="page" id="page-listado-frases">
     <div data-role="header" class="header-content"></div>
     <div role="main" class="ui-content">
-        <form>
-            <input type="text" data-type="search" id="filterable-table-frases">
-        </form>
-        <div id="div-listado-frases"
-             class="ui-grid-a"
-             data-filter="true"
-             data-input="#filterable-table-frases"
-        ></div>
+        <div id="div-listado-frases" class="ui-grid-a">
+            <ul id="ul-frases-listview" data-role="listview" data-filter="true" data-inset="true"></ul>
+        </div>
     </div>
     <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
@@ -41,19 +36,13 @@
     </div>
     <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
-
-<script id="table-rows-frases" type="text/x-handlebars-template">
-    <tr>
-        <td>{{ autor }}</td>
-        <td>{{ texto }}</td>
-    </tr>
-</script>
 <script id="div-rows-frases" type="text/x-handlebars-template">
     {{#each frases}}
-    <div class="ui-grid-a">
-        <div class="ui-block-a"><div class="ui-body ui-body-d">{{ autor }}</div></div>
-        <div class="ui-block-b"><div class="ui-body ui-body-d">{{ texto }}</div></div>
-    </div>
+    <li>
+        <h2>{{autor}}</h2>
+        <p>{{texto}}</p>
+        <p class="ui-li-aside"><strong>#{{id}}</strong></p>
+    </li>
     {{/each}}
     <input type="hidden" class="next-page" value="{{ page }}">
 </script>
