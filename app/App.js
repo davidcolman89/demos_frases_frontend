@@ -4,8 +4,6 @@
 var App = {
     initialize: function () {
         this.initializeTemplates();
-        this.compileTemplates();
-        this.fillTemplatesContent();
         this.bindEvents();
     },
     initializeTemplates: function () {
@@ -14,6 +12,8 @@ var App = {
             headerContent: "",
             footerContent: ""
         };
+        this.compileTemplates();
+        this.fillTemplatesContent();
     },
     bindEvents: function() {
         if ( Helper.isAccessedByMobile() ) return document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -35,29 +35,34 @@ var App = {
 
         Helper.jqueryMobileOnPageShow('#page-listado-frases', function (e) {
             e.preventDefault();
-
+            App.fillListadoFrases();
+            //App.fillListadoFrasesPaginate(1);
         });
 
-        $(document).bind("scrollstop",function(){
+        /*
+        $(document).bind("scrollstop", function () {
             var scrollTop = $(window).scrollTop();
             var winHeight = $(window).height();
             var docHeight = $(document).height();
             var diff = docHeight - winHeight;
             var page = Helper.jqueryGetValueFromField('.next-page:last') || 1;
-            if(scrollTop == diff) {
-                App.fillListadoFrases(page);
-            }
+
+            if(scrollTop == diff) App.fillListadoFrasesPaginate(page);
         });
+        */
+
     },
     onPageInit: function () {
         $.mobile.defaultPageTransition = 'none';
+        Helper.jqueryHideAjaxLoading();
     },
     fillTemplatesContent: function () {
         this.fillHeaderContent();
         this.fillFooterContent();
     },
     fillHeaderContent: function () {
-        Helper.jqueryFillHTMLContent('.header-content', App.templates.headerContent());
+        Helper.jqueryFillHTMLContent('.header-content', App.templates.headerContent({title:'Frases'}));
+        Helper.jqueryFillHTMLContent('.header-content#header-home', App.templates.headerContent({title:'Home'}));
     },
     fillFooterContent: function () {
         Helper.jqueryFillHTMLContent('.footer-content', App.templates.footerContent());
@@ -73,10 +78,11 @@ var App = {
 
         source = Helper.jqueryGetHTMLFromField('#footer-content');
         App.templates.footerContent = Handlebars.compile(source);
-    },
-    fillListadoFrases: function (lastPage) {
 
+    },
+    fillListadoFrasesPaginate: function (lastPage) {
         Helper.jqueryShowAjaxLoading();
+
         Frase.getFrasesFromAPIWithPaginate(lastPage, function (response) {
             var frases = response.data;
 
@@ -90,6 +96,25 @@ var App = {
                 };
                 var html = App.templates.rowsOfFrases(dataForTemplate);
                 Helper.jqueryAppendHTMLContent(jquerySelector, html).listview('refresh');
+            }
+
+            Helper.jqueryHideAjaxLoading();
+        });
+    },
+    fillListadoFrases: function () {
+        Helper.jqueryShowAjaxLoading();
+
+        Frase.getFrasesFromAPI(function (response) {
+            var frases = response.data;
+
+            if(Helper.isFull(frases))
+            {
+                var jquerySelector = '#ul-frases-listview';
+                var dataForTemplate = {
+                    frases: frases
+                };
+                var html = App.templates.rowsOfFrases(dataForTemplate);
+                Helper.jqueryFillHTMLContent(jquerySelector, html).listview('refresh');
             }
 
             Helper.jqueryHideAjaxLoading();

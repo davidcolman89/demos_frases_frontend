@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="assets/css/app.css" />
 </head>
 <body>
+<div data-role="page" id="page-home">
+    <div id="header-home" data-role="header" class="header-content"></div>
+    <div role="main" class="ui-content">
+        <div class="ui-grid-solo">
+            <div class="ui-block-a">
+                <img class="img-header-home" src="assets/image/header_foto2.jpg">
+            </div>
+            <div class="ui-block-a">
+                <h3>WELCOME TO ONELAW</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur augue justo, consequat sed euismod id, mattis eu mauris. Sed et vehicula dolor. Sed vestibulum nibh nec erat consectetur bibendum. Fusce aliquet lacinia lorem, sit amet semper sapien egestas eget. Cras non dolor neque. Donec at mollis augue. Integer imperdiet orci nibh, ac ornare tortor porta ac.</p>
+            </div>
+        </div>
+    </div>
+    <div data-role="footer" class="footer-content" data-position="fixed"></div>
+</div>
 <div data-role="page" id="page-listado-frases">
     <div data-role="header" class="header-content"></div>
     <div role="main" class="ui-content">
@@ -36,6 +51,7 @@
     </div>
     <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
+<!----------------------------::InitTemplates::---------------------------->
 <script id="div-rows-frases" type="text/x-handlebars-template">
     {{#each frases}}
     <li>
@@ -51,17 +67,18 @@
         <img src="assets/image/biblioco34.jpg" class="logo ui-btn-inline">
         <h1 class="ui-btn-inline">LMGSM - Bliblioco 34 </h1>
     </div>
-    <h6>Frases</h6>
+    <h1>{{title}}</h1>
 </script>
 <script id="footer-content" type="text/x-handlebars-template">
     <div data-role="navbar">
         <ul>
-            <li><a href="#page-listado-frases" data-icon="bars" class="ui-btn-active">Listar</a></li>
-            <li><a href="#page-nueva-frase" data-icon="plus">Agregar</a></li>
+            <li><a href="#page-home" data-icon="home" class="ui-btn-active">Home</a></li>
+            <li><a href="#page-listado-frases" data-icon="bars">Frases</a></li>
+
         </ul>
     </div>
 </script>
-
+<!----------------------------::EndTemplates::---------------------------->
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 <script src="assets/lib/jquery/jquery-1.11.1.min.js"></script>
 <script src="assets/lib/jquery/jquery.jscroll.min.js"></script>
