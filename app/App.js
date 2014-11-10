@@ -10,7 +10,8 @@ var App = {
         App.templates = {
             rowsOfFrases: "",
             headerContent: "",
-            footerContent: ""
+            footerContent: "",
+            listadoFrasesNavbar: "",
         };
         this.compileTemplates();
         this.fillTemplatesContent();
@@ -32,6 +33,13 @@ var App = {
             Helper.jqueryShowAjaxLoading();
             FraseController.store('frm-new-frase', 'div-ajax-response');
         });
+
+        Helper.jqueryOnClick('#a-reload-listado-frases', function (e) {
+            e.preventDefault();
+            App.fillListadoFrases();
+        });
+
+
 
         Helper.jqueryMobileOnPageShow('#page-listado-frases', function (e) {
             e.preventDefault();
@@ -61,8 +69,13 @@ var App = {
         this.fillFooterContent();
     },
     fillHeaderContent: function () {
-        Helper.jqueryFillHTMLContent('.header-content', App.templates.headerContent({title:'Frases'}));
+        Helper.jqueryFillHTMLContent('.header-content', App.templates.headerContent({title:''}));
         Helper.jqueryFillHTMLContent('.header-content#header-home', App.templates.headerContent({title:'Home'}));
+        Helper.jqueryFillHTMLContent('.header-content#header-listado-frases', App.templates.headerContent({
+            title:'Frases',
+            html:App.templates.listadoFrasesNavbar()
+        }));
+        Helper.jqueryFillHTMLContent('.header-content#header-app-info', App.templates.headerContent({title:'© 2014 AppBiblioco34'}));
     },
     fillFooterContent: function () {
         Helper.jqueryFillHTMLContent('.footer-content', App.templates.footerContent());
@@ -78,6 +91,9 @@ var App = {
 
         source = Helper.jqueryGetHTMLFromField('#footer-content');
         App.templates.footerContent = Handlebars.compile(source);
+
+        source = Helper.jqueryGetHTMLFromField('#listado-frases-navbar');
+        App.templates.listadoFrasesNavbar = Handlebars.compile(source);
 
     },
     fillListadoFrasesPaginate: function (lastPage) {
