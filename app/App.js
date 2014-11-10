@@ -75,7 +75,7 @@ var App = {
             title:'Frases',
             html:App.templates.listadoFrasesNavbar()
         }));
-        Helper.jqueryFillHTMLContent('.header-content#header-app-info', App.templates.headerContent({title:'© 2014 AppBiblioco34'}));
+        Helper.jqueryFillHTMLContent('.header-content#header-app-info', App.templates.headerContent({title:'©2014 App'}));
     },
     fillFooterContent: function () {
         Helper.jqueryFillHTMLContent('.footer-content', App.templates.footerContent());
