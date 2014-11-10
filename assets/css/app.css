@@ -59,3 +59,7 @@
 .img-header-home {
     width: 100%;
 }
+
+.ui-listview>li p {
+    white-space: normal !important;
+}
