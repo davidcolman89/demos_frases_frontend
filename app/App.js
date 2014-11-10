@@ -12,6 +12,7 @@ var App = {
             headerContent: "",
             footerContent: "",
             listadoFrasesNavbar: "",
+            viewFrase: "",
         };
         this.compileTemplates();
         this.fillTemplatesContent();
@@ -38,8 +39,6 @@ var App = {
             e.preventDefault();
             App.fillListadoFrases();
         });
-
-
 
         Helper.jqueryMobileOnPageShow('#page-listado-frases', function (e) {
             e.preventDefault();
@@ -79,6 +78,9 @@ var App = {
     },
     fillFooterContent: function () {
         Helper.jqueryFillHTMLContent('.footer-content', App.templates.footerContent());
+    },
+    fillViewFrase: function () {
+        Helper.jqueryFillHTMLContent('#frase-view-content', App.templates.viewFrase());
     },
     compileTemplates: function () {
         var source;

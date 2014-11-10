@@ -40,7 +40,7 @@
                         <li>
                             Version
                             <ul>
-                                <li><p>1.0.0 201411101551-beta</p></li>
+                                <li><p>0.0.1-506af48(git)</p></li>
                             </ul>
                         </li>
                         <li>
@@ -85,6 +85,11 @@
     </div>
     <div data-role="footer" class="footer-content" data-position="fixed"></div>
 </div>
+<div data-role="page" id="page-vista-frase">
+    <div data-role="header" class="header-content"></div>
+    <div id="frase-view-content" role="main" class="ui-content"></div>
+    <div data-role="footer" class="footer-content" data-position="fixed"></div>
+</div>
 <!----------------------------::InitTemplates::---------------------------->
 <script id="div-rows-frases" type="text/x-handlebars-template">
     {{#each frases}}
@@ -119,6 +124,12 @@
             <li><a id="a-reload-listado-frases" href="#" data-icon="refresh" data-theme="b">Actualizar</a></li>
             <li><a href="#page-nueva-frase" data-icon="plus" data-theme="b">Frase</a></li>
         </ul>
+    </div>
+</script>
+<script id="frase-view" type="text/x-handlebars-template">
+    <h3 class="ui-bar ui-bar-a ui-corner-all">{{autor}}</h3>
+    <div class="ui-body ui-body-a ui-corner-all">
+        <p>{{texto}}</p>
     </div>
 </script>
 <!----------------------------::EndTemplates::---------------------------->
